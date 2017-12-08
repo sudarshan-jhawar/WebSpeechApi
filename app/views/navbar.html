@@ -1,0 +1,31 @@
+<div ng-controller="NavbarCtrl as vm">
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle collapsed" ng-init="navbarCollapsed = true;" ng-click="navbarCollapsed=!navbarCollapsed;"
+                    data-toggle="collpase" data-target="#js-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="#/">WebSpeechApi</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-class="{'in':!navbarCollapsed}">
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li ng-class="{active:vm.isRoute('gallery')}">
+                        <a href="#/">Gallery</a>
+                    </li>
+                    <li ng-class="{active:vm.isRoute('settings')}">
+                        <a ng-href="#/settings">Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
