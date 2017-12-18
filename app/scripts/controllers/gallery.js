@@ -8,29 +8,23 @@
  * Controller of the webSpeechApiApp
  */
 angular.module('webSpeechApiApp')
-  .controller('GalleryCtrl', function ($scope, $window, GalleryService, GalleryModalService, $interval) {
+  .controller('GalleryCtrl', function ($scope, $window, GalleryService, GalleryModalService, $interval,$timeout,SpeechRecognitionService) {
     var vm = this;
+    var recognitionTimeOut;
 
     vm.alerts = [];
-    //vm.albums;
-    //[
-    //   {
-    //     albumName: "Album",
-    //     images: [{
-    //       src: "app/images/yeoman.png",
-    //       caption: "Image one"
-    //     }]
-    //   }
-    // ];
     vm.selectedIndex = -1;
     vm.isSlideShowRunning = false;
 
     $scope.$on('$locationChangeStart', function () {
       stopSlideShow();
+      $timeout.cancel(recognitionTimeOut);
+      SpeechRecognitionService.stopRecognition();
     });
 
     function activate() {
       getImages();
+      recognitionTimeOut = $timeout(startSpeechRecognition,3000);
     }
 
     function editCaption() {
@@ -109,6 +103,15 @@ angular.module('webSpeechApiApp')
         vm.isSlideShowRunning = false;
       }
     }
+
+    function startSpeechRecognition() {
+      try {
+        SpeechRecognitionService.startRecognition();
+      } catch (error) {
+        addAlert('danger',error.message);
+      }
+    }
+
     vm.addAlert = addAlert;
     vm.closeAlert = closeAlert;
     vm.isSelected = isSelected;

@@ -1,8 +1,9 @@
 <div>
     <div class="row">
         <div class="col-lg-10 col-lg-offset-1">
-            <uib-alert ng-repeat="alert in vm.alerts" dismiss-on-timout="5000" type={{alert.type}} close="vm.closeAlert($index)">
-                {{alert.message}}</uib-alert>
+            <div uib-alert ng-repeat="alert in vm.alerts" dismiss-on-timout="5000" ng-class="'alert-'+(alert.type)" close="vm.closeAlert($index)">
+                {{alert.message}}
+            </div>
             <h2>
                 {{vm.album.albumName}}
             </h2>
