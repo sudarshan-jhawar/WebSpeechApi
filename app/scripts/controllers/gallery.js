@@ -8,7 +8,7 @@
  * Controller of the webSpeechApiApp
  */
 angular.module('webSpeechApiApp')
-  .controller('GalleryCtrl', function ($scope, $window, GalleryService, GalleryModalService, $interval,$timeout,SpeechRecognitionService) {
+  .controller('GalleryCtrl', function ($scope, $window, GalleryService, GalleryModalService, $interval, $timeout, SpeechRecognitionService) {
     var vm = this;
     var recognitionTimeOut;
 
@@ -24,7 +24,24 @@ angular.module('webSpeechApiApp')
 
     function activate() {
       getImages();
-      recognitionTimeOut = $timeout(startSpeechRecognition,3000);
+      recognitionTimeOut = $timeout(startSpeechRecognition, 3000);
+    }
+
+    function setSpeechProperties() {
+      SpeechRecognitionService.clearCommands();
+      SpeechRecognitionService.addCommand('Edit Caption', editCaption);
+      SpeechRecognitionService.addCommand('start slideshow', startSlideShow);
+      SpeechRecognitionService.addCommand('stop slideshow', stopSlideShow);
+      SpeechRecognitionService.addCommand('next', next);
+      SpeechRecognitionService.addCommand('previous', previous);
+
+      SpeechRecognitionService.setNoMatchCallback(function (transript) {
+        addAlert('danger', 'No Matching command found for ' + transript);
+      });
+
+      SpeechRecognitionService.setUnrecognisedCallback(function (transript) {
+        addAlert('info', 'I am not sure but you said "' + transript + '"');
+      });
     }
 
     function editCaption() {
@@ -37,12 +54,15 @@ angular.module('webSpeechApiApp')
         GalleryModalService.editCaption(selectedImage.caption)
           .then(function (newCaption) {
             if (newCaption !== selectedImage.caption) {
+              setSpeechProperties();
               selectedImage.caption = newCaption;
               GalleryService.saveImageData(angular.toJson(vm.album))
                 .then(function () {
                   addAlert('success', 'Caption updated successfully');
                 });
             }
+          }, function () {
+            setSpeechProperties();
           });
 
       }
@@ -88,6 +108,7 @@ angular.module('webSpeechApiApp')
       }
       selectImage(index);
     }
+
     var slideShowPromise;
     function startSlideShow() {
       if (!angular.isDefined(slideShowPromise)) {
@@ -106,9 +127,10 @@ angular.module('webSpeechApiApp')
 
     function startSpeechRecognition() {
       try {
+        setSpeechProperties();
         SpeechRecognitionService.startRecognition();
       } catch (error) {
-        addAlert('danger',error.message);
+        addAlert('danger', error.message);
       }
     }
 
