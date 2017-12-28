@@ -8,7 +8,7 @@
  * Controller of the webSpeechApiApp
  */
 angular.module('webSpeechApiApp')
-  .controller('GalleryCtrl', function ($scope, $window, GalleryService, GalleryModalService, $interval, $timeout, SpeechRecognitionService) {
+  .controller('GalleryCtrl', function ($scope, $window, GalleryService, GalleryModalService, $interval, $timeout, SpeechRecognitionService, speechSynthesisService) {
     var vm = this;
     var recognitionTimeOut;
 
@@ -27,6 +27,9 @@ angular.module('webSpeechApiApp')
       recognitionTimeOut = $timeout(startSpeechRecognition, 3000);
     }
 
+    function speakCaption() {
+      speechSynthesisService.speak(vm.album.images[vm.selectedIndex].caption);
+    }
     function setSpeechProperties() {
       SpeechRecognitionService.clearCommands();
       SpeechRecognitionService.addCommand('Edit Caption', editCaption);
@@ -54,6 +57,7 @@ angular.module('webSpeechApiApp')
         GalleryModalService.editCaption(selectedImage.caption)
           .then(function (newCaption) {
             if (newCaption !== selectedImage.caption) {
+              speakCaption();
               setSpeechProperties();
               selectedImage.caption = newCaption;
               GalleryService.saveImageData(angular.toJson(vm.album))
@@ -77,6 +81,7 @@ angular.module('webSpeechApiApp')
     function selectImage(index) {
       $window.scrollTo(0, 0);
       vm.selectedIndex = index;
+      speakCaption();
     }
 
     function isSelected(index) {

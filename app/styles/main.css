@@ -45,3 +45,21 @@ h3 span.glyphicon {
   vertical-align: 3px;
   margin-left: 10px;
 }
+
+.settings-row{
+  height: 3.5em;
+  align-items: center;
+  display: flex;
+}
+.vertical-offset{
+  top:25px;
+}
+.gallery-button{
+  width: 100%;
+}
+label{
+  font-size: 1.25em;
+}
+#sampleText{
+  margin-bottom: 0.75em;
+}

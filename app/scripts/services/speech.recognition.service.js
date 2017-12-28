@@ -38,7 +38,7 @@
         noMatchCallback = callback;
       }
 
-      function setUnreognisedCallback(callback) {
+      function setUnrecognisedCallback(callback) {
         unrecognisedCallback = callback;
       }
 
@@ -60,7 +60,7 @@
               }
             } else {
               if (unrecognisedCallback) {
-                setUnreognisedCallback(transcript);
+                setUnrecognisedCallback(transcript);
               } else {
                 console.log('Un-recognised command' + transcript);
               }
@@ -120,7 +120,7 @@
         addCommand: addCommand,
         clearCommands: clearCommands,
         setNoMatchCallback: setNoMatchCallback,
-        setUnreognisedCallback: setUnreognisedCallback
+        setUnrecognisedCallback: setUnrecognisedCallback
       };
 
     });

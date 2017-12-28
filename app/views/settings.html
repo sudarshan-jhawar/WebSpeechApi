@@ -1,1 +1,19 @@
-<div></div>
+<div class="vertical-offset">
+    <div class="row">
+        <uib-alert class="col-lg-4 col-lg-offset-4" dismiss-on-timeout="5000" ng-repeat="alert in vm.alerts" type="{{alert.type}}"
+            close="vm.closeAlert($index)">{{alert.message}}</uib-alert>
+    </div>
+    <div class="row">
+        <label for="sampleText" class="col-lg-2 col-lg-offset-4">Sample text</label>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4">
+            <input type="text" id="sampleText" ng-model="vm.text"/>
+        </div>
+    </div>
+    <div class="row setting-row">
+        <div class="col-lg-2 col-lg-offset-4">
+            <button class="btn btn-success gallery-button" ng-click="vm.speak()">Speak</button>
+        </div>
+    </div>
+</div>
